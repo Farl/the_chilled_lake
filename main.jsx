@@ -14,7 +14,7 @@ const defaultConfig = {
 };
 const App = () => {
   React.useEffect(() => {
-    const audio = new Audio("/chill_ambient_loop.mp3");
+    const audio = new Audio(new URL("./chill_ambient_loop.mp3", import.meta.url));
     audio.loop = true;
     audio.preload = "auto";
     audio.playsInline = true;

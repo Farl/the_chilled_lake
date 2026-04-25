@@ -1,6 +1,7 @@
 import { jsxDEV } from "react/jsx-dev-runtime";
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
+const getAssetUrl = (path) => new URL(path, import.meta.url).href;
 const WaterSimulation = ({ config }) => {
   const containerRef = useRef(null);
   const lastRainSoundTimeRef = useRef(0);
@@ -83,8 +84,8 @@ const WaterSimulation = ({ config }) => {
           console.warn("Failed to load sfx buffer:", src, e);
         }
       };
-      loadBuffer("/raindrop_soft.mp3", "rain");
-      loadBuffer("/splash_user.mp3", "user");
+      loadBuffer(getAssetUrl("./raindrop_soft.mp3"), "rain");
+      loadBuffer(getAssetUrl("./splash_user.mp3"), "user");
     }
     const container = containerRef.current;
     if (!container) return;
@@ -178,16 +179,16 @@ const WaterSimulation = ({ config }) => {
     simMaterialRef.current = simMaterial;
     const textureLoader = new THREE.TextureLoader();
     const texturePaths = [
-      "./lake_bottom.png",
-      "./lake_bottom_2.png",
-      "./lake_bottom_3.png",
-      "./lake_bottom_4.png",
-      "./lake_bottom_5.png",
-      "./lake_bottom_6.png",
-      "./lake_bottom_7.png",
-      "./lake_bottom_8.png",
-      "./lake_bottom_9.png",
-      "./lake_bottom_10.png"
+      getAssetUrl("./lake_bottom.png"),
+      getAssetUrl("./lake_bottom_2.png"),
+      getAssetUrl("./lake_bottom_3.png"),
+      getAssetUrl("./lake_bottom_4.png"),
+      getAssetUrl("./lake_bottom_5.png"),
+      getAssetUrl("./lake_bottom_6.png"),
+      getAssetUrl("./lake_bottom_7.png"),
+      getAssetUrl("./lake_bottom_8.png"),
+      getAssetUrl("./lake_bottom_9.png"),
+      getAssetUrl("./lake_bottom_10.png")
     ];
     const floorTex = textureLoader.load(texturePaths[0]);
     floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
