@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Chilled Lake</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+        background: #05080b;
+      }
+      #app {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@18.3.1?dev",
+          "react-dom/client": "https://esm.sh/react-dom@18.3.1/client?dev",
+          "three": "https://esm.sh/three@0.161.0"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="./main.jsx"></script>
+  </body>
+</html>
