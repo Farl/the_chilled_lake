@@ -219,6 +219,8 @@ const WaterSimulation = ({ config }) => {
         uFloorTexB: { value: floorTex },
         uMixFactor: { value: 0 },
         uTexelSize: { value: new THREE.Vector2(1 / simResX, 1 / simResY) },
+        uViewportAspect: { value: aspect },
+        uTextureAspect: { value: 1 },
         uRefractionScale: { value: config.refractionScale },
         uReflectionColor: { value: new THREE.Color(8965375) },
         uReflectionStrength: { value: config.reflectionStrength },
@@ -237,11 +239,26 @@ const WaterSimulation = ({ config }) => {
         uniform sampler2D uFloorTexB;
         uniform float uMixFactor;
         uniform vec2 uTexelSize;
+        uniform float uViewportAspect;
+        uniform float uTextureAspect;
         uniform float uRefractionScale;
         uniform vec3 uReflectionColor;
         uniform float uReflectionStrength;
         uniform float uTime;
         varying vec2 vUv;
+
+        vec2 coverUv(vec2 uv, float viewportAspect, float textureAspect) {
+          float ratio = viewportAspect / textureAspect;
+          vec2 coveredUv = uv;
+
+          if (ratio > 1.0) {
+            coveredUv.y = (uv.y - 0.5) / ratio + 0.5;
+          } else {
+            coveredUv.x = (uv.x - 0.5) * ratio + 0.5;
+          }
+
+          return coveredUv;
+        }
 
         void main() {
           float h = texture2D(uWaterHeight, vUv).r;
@@ -252,8 +269,12 @@ const WaterSimulation = ({ config }) => {
 
           vec3 normal = normalize(vec3(hL - hR, hB - hT, 0.1));
 
-          // Refracted lookup into the lake-bottom textures
-          vec2 refractedUv = vUv + normal.xy * uRefractionScale;
+          // Keep the lake-bottom images in "cover" mode so they never stretch with the viewport.
+          vec2 refractedUv = coverUv(
+            vUv + normal.xy * uRefractionScale,
+            uViewportAspect,
+            uTextureAspect
+          );
           vec3 floorColorA = texture2D(uFloorTexA, refractedUv).rgb;
           vec3 floorColorB = texture2D(uFloorTexB, refractedUv).rgb;
           vec3 floorColor = mix(floorColorA, floorColorB, clamp(uMixFactor, 0.0, 1.0));
@@ -458,6 +479,7 @@ const WaterSimulation = ({ config }) => {
           1 / newSimResX,
           1 / newSimResY
         );
+        renderMaterialRef.current.uniforms.uViewportAspect.value = newAspect;
       }
     };
     const updateMouse = (e) => {
