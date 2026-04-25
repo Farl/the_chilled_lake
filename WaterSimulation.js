@@ -92,7 +92,6 @@ const WaterSimulation = ({ config }) => {
     const width = container.clientWidth;
     const height = container.clientHeight;
     const aspect = width / height;
-    const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
@@ -283,8 +282,12 @@ const WaterSimulation = ({ config }) => {
     });
     renderMaterialRef.current = renderMaterial;
     const fullScreenQuad = new THREE.PlaneGeometry(2, 2);
+    const simScene = new THREE.Scene();
+    const renderScene = new THREE.Scene();
     const simMesh = new THREE.Mesh(fullScreenQuad, simMaterial);
     const renderMesh = new THREE.Mesh(fullScreenQuad, renderMaterial);
+    simScene.add(simMesh);
+    renderScene.add(renderMesh);
     let frameHandle = 0;
     const randBetween = (min, max) => min + Math.random() * (max - min);
     const playRain = () => {
@@ -390,7 +393,7 @@ const WaterSimulation = ({ config }) => {
       simMaterial.uniforms.uCurrent.value = read.texture;
       simMaterial.uniforms.uPrev.value = old.texture;
       renderer.setRenderTarget(write);
-      renderer.render(simMesh, camera);
+      renderer.render(simScene, camera);
       targetsRef.current.old = read;
       targetsRef.current.read = write;
       targetsRef.current.write = old;
@@ -427,7 +430,7 @@ const WaterSimulation = ({ config }) => {
         }
       }
       renderer.setRenderTarget(null);
-      renderer.render(renderMesh, camera);
+      renderer.render(renderScene, camera);
     };
     frameHandle = requestAnimationFrame(animate);
     const onResize = () => {

@@ -1,7 +1,7 @@
 import { jsxDEV } from "react/jsx-dev-runtime";
 import React from "react";
 import { createRoot } from "react-dom/client";
-import WaterSimulation from "./WaterSimulation.jsx";
+import WaterSimulation from "./WaterSimulation.js";
 const rootEl = document.getElementById("app");
 const defaultConfig = {
   damping: 0.985,
