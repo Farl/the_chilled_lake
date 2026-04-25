@@ -3,8 +3,6 @@ import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 const WaterSimulation = ({ config }) => {
   const containerRef = useRef(null);
-  const rainSoundsRef = useRef([]);
-  const userSoundsRef = useRef([]);
   const lastRainSoundTimeRef = useRef(0);
   const lastUserSoundTimeRef = useRef(0);
   const mouseRef = useRef(new THREE.Vector2(-1, -1));
@@ -184,7 +182,12 @@ const WaterSimulation = ({ config }) => {
       "./lake_bottom_2.png",
       "./lake_bottom_3.png",
       "./lake_bottom_4.png",
-      "./lake_bottom_5.png"
+      "./lake_bottom_5.png",
+      "./lake_bottom_6.png",
+      "./lake_bottom_7.png",
+      "./lake_bottom_8.png",
+      "./lake_bottom_9.png",
+      "./lake_bottom_10.png"
     ];
     const floorTex = textureLoader.load(texturePaths[0]);
     floorTex.wrapS = floorTex.wrapT = THREE.RepeatWrapping;
